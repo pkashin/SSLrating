@@ -1,3 +1,7 @@
+![version](https://img.shields.io/badge/version-1.0.0-brightgreen?style=plastic)
+![GitHub](https://img.shields.io/github/license/pkashin/sslRating?style=plastic)
+![Traefik](https://img.shields.io/badge/Traefik-2.10.1-blue?style=plastic)
+![NextJS](https://img.shields.io/badge/Next.js-13.4.4-blue?style=plastic)<br>
 Translated into English - [Yandex Translate](https://translate.yandex.com/).
 
 ## 🏆 Getting an A+ rating in SSL Labs using Traefik and Let's Encrypt

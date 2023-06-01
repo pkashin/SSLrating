@@ -1,0 +1,54 @@
+version: '3.9'
+services:
+  traefik:
+    image: traefik:2.10.1
+    container_name: traefik
+    restart: always
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.certResolver=letsEncrypt"
+      - "--certificatesresolvers.letsEncrypt.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.letsEncrypt.acme.storage=/etc/traefik/acme/acme.json"
+      - "--certificatesresolvers.letsEncrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsEncrypt.acme.httpchallenge.entrypoint=web"
+      - "--providers.file.directory=/etc/traefik/config/"
+      - "--providers.file.watch=true"
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "80:80"
+      - "443:443" 
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/config/:/etc/traefik/config/:ro
+      - ./traefik/acme/:/etc/traefik/acme/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
+      - "traefik.http.routers.traefik.tls.certresolver=letsEncrypt"
+      - "traefik.http.routers.traefik.service=api@internal"
+    networks:
+      - webproxy
+
+  nextjs:
+    image: pkashin/nextjs:1.0.5
+    container_name: nextjs
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextjs.tls.certresolver=letsEncrypt"
+      - "traefik.http.routers.nextjs.rule=Host(`${DOMAIN}`) || Host(`www.${DOMAIN}`)"
+      - "traefik.http.routers.nextjs.middlewares=redirect-https-www@file, hsts-headers@file"
+    networks:
+      - webproxy
+
+networks:
+  webproxy:
+    name: webproxy

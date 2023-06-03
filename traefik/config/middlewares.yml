@@ -8,3 +8,10 @@ http:
     hsts-headers:
       headers:
         stsSeconds: 63072000
+        frameDeny: true
+        contentTypeNosniff: true
+        # contentSecurityPolicy: "default-src https:"
+        # contentSecurityPolicy: default-src *; object-src 'none'
+        # contentSecurityPolicy: "default-src https: 'unsafe-eval' 'unsafe-inline'; object-src 'none'"
+        # contentSecurityPolicy: "default-src https: 'unsafe-inline'"
+        contentSecurityPolicy: "default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'"

@@ -1,4 +1,4 @@
-![version](https://img.shields.io/badge/version-1.0.0-brightgreen?style=plastic)
+![version](https://img.shields.io/badge/version-1.0.1-brightgreen?style=plastic)
 ![GitHub](https://img.shields.io/github/license/pkashin/sslRating?style=plastic)
 ![Traefik](https://img.shields.io/badge/Traefik-2.10.1-blue?style=plastic)
 ![NextJS](https://img.shields.io/badge/Next.js-13.4.4-blue?style=plastic)<br>
